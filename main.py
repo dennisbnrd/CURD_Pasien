@@ -7,7 +7,8 @@ data_pasien = [
     {"id": "Pwd003", "nama": "Ros Sally", "jenis_kelamin": "P", "umur": 26, "alamat": "Surabaya", "nomor_hp": "08345678910"},
 ]
 
-data_reservasi = []
+data_reservasi = [{"id_pasien": "Pwd001","keluhan": "Demam Tinggi","tanggal": "20/06/2025","dokter": "dr. Andi","rawat": "Jalan","ruangan": "-"
+    }]
 
 data_dokter = [
     {"nama": "dr. Andi", "spesialis": "Umum", "hari": "Senin - Rabu"},
@@ -25,13 +26,13 @@ def login():
     password = input("Password: ").strip()
 
     if role == "admin" and username == "admin" and password == "123":
-        print("\n✅ Login Admin Berhasil!")
+        print("\nLogin Admin Berhasil!")
         return "admin", username
     elif role == "pasien" and any(p["id"] == username for p in data_pasien) and password == "123":
-        print("\n✅ Login Pasien Berhasil!")
+        print("\nLogin Pasien Berhasil!")
         return "pasien", username
 
-    print("❌ Login gagal.")
+    print("Login gagal.")
     return None, None
 
 # =================== MENU ===================
@@ -50,6 +51,7 @@ def sub_menu_data():
     print("3. Tambah Data Pasien")
     print("4. Ubah Data Pasien")
     print("5. Hapus Data Pasien")
+    print("6. Keluar")
 
 def sub_menu_reservasi():
     print("\n==== Menu Data Reservasi Admin ====")
@@ -57,6 +59,7 @@ def sub_menu_reservasi():
     print("2. Cari Data Reservasi")
     print("3. Ubah Data Reservasi")
     print("4. Hapus Data Reservasi")
+    print("5. Keluar")
 
 def sub_menu_dokter():
     print("\n==== Menu Data Dokter ====")
@@ -64,6 +67,7 @@ def sub_menu_dokter():
     print("2. Tambah Jadawal Dokter")
     print("3. Ubah Jadwal Dokter")
     print("4. Hapus Jadwal Dokter")
+    print("5. Keluar")
 
 def menu_pasien():
     print("\n=== MENU PASIEN ===")
@@ -78,18 +82,61 @@ def menu_pasien():
 def id_pasien_baru():
     return f"Pwd{len(data_pasien)+1:03d}"
 
+
 def tambah_pasien():
     print("\n=== Tambah Data Pasien ===")
+    
+    id_baru = id_pasien_baru()
+    nama = input("Masukkan Nama Pasien: ").title()
+
+    while True:
+        jenis_kelamin = input("Jenis Kelamin (L/P): ").strip().upper()
+        if jenis_kelamin in ["L", "P"]:
+            break
+        print("Jenis kelamin hanya boleh 'L' (Laki-laki) atau 'P' (Perempuan).")
+
+    while True:
+        try:
+            umur = int(input("Umur: "))
+            if umur > 0 and umur < 100:
+                break
+            print("Umur harus lebih dari 0 dan kurang dari 100.")
+        except ValueError:
+            print("Umur harus berupa angka.")
+
+    alamat = input("Alamat: ").title()
+
+    while True:
+        nomor_hp = input("Nomor HP: ").strip()
+        if nomor_hp.isdigit() and len(nomor_hp) >= 10 and len(nomor_hp) <= 13:
+            break
+        print("Nomor HP harus berupa angka dan minimal 10 digit.")
+
     pasien = {
-        "id": id_pasien_baru(),
-        "nama": input("Masukkan Nama Pasien: ").title(),
-        "jenis_kelamin": input("Jenis Kelamin (L/P): ").upper(),
-        "umur": int(input("Umur: ")),
-        "alamat": input("Alamat: ").title(),
-        "nomor_hp": input("Nomor HP: ")
+        "id": id_baru,
+        "nama": nama,
+        "jenis_kelamin": jenis_kelamin,
+        "umur": umur,
+        "alamat": alamat,
+        "nomor_hp": nomor_hp
     }
-    data_pasien.append(pasien)
-    print(f"✅ Pasien berhasil ditambahkan dengan ID {pasien['id']}")
+
+
+    print("\nData yang akan ditambahkan:")
+    tabel = [[k.replace("_", " ").title(), v] for k, v in pasien.items()]
+    print(tabulate(tabel, tablefmt="grid"))
+
+    while True:
+        konfirmasi = input("\nApakah data sudah benar dan ingin disimpan? (Y/N): ").strip().upper()
+        if konfirmasi == "Y":
+            data_pasien.append(pasien)
+            print(f"Pasien berhasil ditambahkan dengan ID {pasien['id']}")
+            break
+        elif konfirmasi == "N":
+            print("Penambahan data pasien dibatalkan.")
+            break
+        else:
+            print("Input tidak valid. Harap masukkan 'Y' atau 'N'.")
 
 def tampil_data_pasien():
     print("\n=== Semua Data Pasien ===")
@@ -101,14 +148,12 @@ def cari_data_pasien():
     if hasil:
         print(tabulate(hasil, headers="keys", tablefmt="grid"))
     else:
-        print("❌ Pasien tidak ditemukan.")
-
-from tabulate import tabulate
+        print("Pasien tidak ditemukan.")
 
 def ubah_data_diri(id_pasien):
     pasien = next((p for p in data_pasien if p["id"] == id_pasien), None)
     if not pasien:
-        print("❌ Data pasien tidak ditemukan.")
+        print("Data pasien tidak ditemukan.")
         return
 
     print("\n=== Data Diri Saat Ini ===")
@@ -122,35 +167,35 @@ def ubah_data_diri(id_pasien):
                 if new_val.isdigit():
                     pasien[key] = int(new_val)
                 else:
-                    print("❌ Umur harus berupa angka. Lewati.")
+                    print("Umur harus berupa angka. Lewati.")
             elif key == "jenis_kelamin":
                 if new_val.upper() in ["L", "P"]:
                     pasien[key] = new_val.upper()
                 else:
-                    print("❌ Jenis kelamin harus 'L' atau 'P'. Lewati.")
+                    print("Jenis kelamin harus 'L' atau 'P'. Lewati.")
             elif key == "nomor_hp":
                 if new_val.isdigit():
                     pasien[key] = new_val
                 else:
-                    print("❌ Nomor HP harus berupa angka. Lewati.")
+                    print("Nomor HP harus berupa angka. Lewati.")
             elif key in ["nama", "alamat"]:
                 pasien[key] = new_val.title()
             else:
                 pasien[key] = new_val
 
-    print("✅ Data diri berhasil diperbarui.")
+    print("Data diri berhasil diperbarui.")
 
 def ubah_data_pasien():
     id_pas = input("Masukkan ID Pasien yang ingin diubah: ").strip()
     pasien = next((p for p in data_pasien if p["id"] == id_pas), None)
     if not pasien:
-        print("❌ Data pasien tidak ditemukan.")
+        print("Data pasien tidak ditemukan.")
         return
     for key in ["nama", "jenis_kelamin", "umur", "alamat", "nomor_hp"]:
         new_val = input(f"{key.replace('_',' ').title()} baru (biarkan kosong jika tidak ingin mengubah): ")
         if new_val:
             pasien[key] = int(new_val) if key == "umur" else new_val.title() if key in ["nama", "alamat"] else new_val
-    print("✅ Data pasien berhasil diperbarui.")
+    print("Data pasien berhasil diperbarui.")
 
 def hapus_data_pasien():
     id_pas = input("Masukkan ID Pasien yang ingin dihapus: ").strip()
@@ -158,7 +203,7 @@ def hapus_data_pasien():
     global data_reservasi
     data_pasien = [p for p in data_pasien if p["id"] != id_pas]
     data_reservasi = [r for r in data_reservasi if r["id_pasien"] != id_pas]
-    print(f"✅ Data pasien dan reservasi dengan ID {id_pas} berhasil dihapus.")
+    print(f"Data pasien dan reservasi dengan ID {id_pas} berhasil dihapus.")
 
 # =================== FUNGSI RESERVASI ===================
 
@@ -167,41 +212,41 @@ def lihat_jadwal_admin():
     if data_dokter:
         print(tabulate(data_dokter, headers="keys", tablefmt="grid"))
     else:
-        print("❌ Belum ada jadwal dokter.")
+        print("Belum ada jadwal dokter.")
 
 def tambah_jadwal_dokter():
     print("\n=== Tambah Jadwal Dokter ===")
     nama = input("Nama Dokter: ").title()
     if not nama:
-        print("❌ Nama dokter tidak boleh kosong.")
+        print("Nama dokter tidak boleh kosong.")
         return
     if any(d["nama"] == nama for d in data_dokter):
-        print("❌ Dokter sudah terdaftar.")
+        print("Dokter sudah terdaftar.")
         return
     spesialis = input("Spesialis: ").title()
     if not spesialis:
-        print("❌ Spesialis tidak boleh kosong.")
+        print("Spesialis tidak boleh kosong.")
         return
     hari = input("Hari Praktek (contoh: Senin - Rabu): ").title()
     if not hari:
-        print("❌ Hari praktek tidak boleh kosong.")
+        print("Hari praktek tidak boleh kosong.")
         return
     data_dokter.append({"nama": nama, "spesialis": spesialis, "hari": hari})
-    print("✅ Jadwal dokter berhasil ditambahkan.")
+    print("Jadwal dokter berhasil ditambahkan.")
 
     print("\n=== Tambah Jadwal Dokter ===")
     nama = input("Nama Dokter: ").title()
     spesialis = input("Spesialis: ").title()
     hari = input("Hari Praktek (contoh: Senin - Rabu): ")
     data_dokter.append({"nama": nama, "spesialis": spesialis, "hari": hari})
-    print("✅ Jadwal dokter berhasil ditambahkan.")
+    print("Jadwal dokter berhasil ditambahkan.")
 
 def ubah_jadwal_dokter():
     lihat_jadwal_admin()
     nama = input("Masukkan nama dokter yang ingin diubah: ").title()
     dokter = next((d for d in data_dokter if d["nama"] == nama), None)
     if not dokter:
-        print("❌ Dokter tidak ditemukan.")
+        print("Dokter tidak ditemukan.")
         return
     print("\nBiarkan kosong jika tidak ingin mengubah.")
     spesialis = input("Spesialis baru: ").title()
@@ -210,7 +255,7 @@ def ubah_jadwal_dokter():
         dokter["spesialis"] = spesialis
     if hari:
         dokter["hari"] = hari
-    print("✅ Jadwal dokter berhasil diubah.")
+    print("Jadwal dokter berhasil diubah.")
 
 
 def hapus_jadwal_dokter():
@@ -220,9 +265,9 @@ def hapus_jadwal_dokter():
     awal = len(data_dokter)
     data_dokter = [d for d in data_dokter if d["nama"] != nama]
     if len(data_dokter) < awal:
-        print("✅ Jadwal dokter berhasil dihapus.")
+        print("Jadwal dokter berhasil dihapus.")
     else:
-        print("❌ Dokter tidak ditemukan.")
+        print("Dokter tidak ditemukan.")
 
 def tambah_reservasi(id_pasien):
     print("\n=== Buat Reservasi ===")
@@ -239,7 +284,7 @@ def tambah_reservasi(id_pasien):
         "rawat": rawat,
         "ruangan": ruangan
     })
-    print("✅ Reservasi berhasil ditambahkan.")
+    print("Reservasi berhasil ditambahkan.")
 
 def ubah_data_reservasi():
     id_pas = input("Masukkan ID Pasien untuk ubah reservasi: ").strip()
@@ -258,7 +303,7 @@ def ubah_data_reservasi():
     if new_dokter: reservasi["dokter"] = new_dokter
     reservasi["rawat"] = new_rawat.title()
     reservasi["ruangan"] = new_ruangan if new_rawat.lower() == "inap" else "-"
-    print("✅ Reservasi berhasil diperbarui.")
+    print("Reservasi berhasil diperbarui.")
 
 def hapus_reservasi():
     id_pas = input("Masukkan ID Pasien untuk hapus reservasi: ").strip()
@@ -266,9 +311,31 @@ def hapus_reservasi():
     awal = len(data_reservasi)
     data_reservasi = [r for r in data_reservasi if r["id_pasien"] != id_pas]
     if len(data_reservasi) < awal:
-        print("✅ Reservasi berhasil dihapus.")
+        print("Reservasi berhasil dihapus.")
     else:
-        print("❌ Reservasi tidak ditemukan.")
+        print("Reservasi tidak ditemukan.")
+
+def hapus_reservasi_pasien(id_pasien):
+    global data_reservasi  
+
+    reservasi_pasien = [r for r in data_reservasi if r["id_pasien"] == id_pasien]
+    
+    if not reservasi_pasien:
+        print("Anda belum memiliki reservasi.")
+        return
+
+    print("\n=== Reservasi Anda Saat Ini ===")
+    print(tabulate(reservasi_pasien, headers="keys", tablefmt="grid"))
+
+    konfirmasi = input("Apakah Anda yakin ingin menghapus semua reservasi Anda? (y/n): ").lower()
+    if konfirmasi == "y":
+        data_reservasi = [r for r in data_reservasi if r["id_pasien"] != id_pasien]
+        print("Reservasi Anda berhasil dihapus.")
+    elif konfirmasi == "n":
+        print("Penghapusan dibatalkan.")
+    else:
+        print("Input tidak valid. Penghapusan dibatalkan.")
+
 
 def tampil_data_gabungan():
     print("\n=== Data Gabungan Pasien & Reservasi ===")
@@ -290,7 +357,7 @@ def tampil_data_gabungan():
     if data_gabungan:
         print(tabulate(data_gabungan, headers="keys", tablefmt="grid"))
     else:
-        print("❌ Belum ada data reservasi.")
+        print("Belum ada data reservasi.")
 
 # =================== MAIN LOOP ===================
 
@@ -323,6 +390,7 @@ while True:
                     elif pilih == "5":
                         hapus_data_pasien()
                         print()    
+                    elif pilih == "6":
                         break
                     else:
                         print("Menu Tidak Valid")    
@@ -344,28 +412,33 @@ while True:
                     elif pilih == "4":
                         hapus_reservasi()
                         print()
+                    elif pilih == "5":
+                        break
+                    else:
+                        print("Menu Tidak Valid")     
 
             elif pilih == "3":
                 while True:
                     sub_menu_dokter()
-                    pilih_dokter = input("Pilih Menu: ")
-                    if pilih_dokter == "1":
+                    pilih = input("Pilih Menu: ")
+                    if pilih == "1":
                         lihat_jadwal_admin()
-                    elif pilih_dokter == "2":
+                    elif pilih == "2":
                         tambah_jadwal_dokter()
-                    elif pilih_dokter == "3":
+                    elif pilih == "3":
                         ubah_jadwal_dokter()
-                    elif pilih_dokter == "4":
+                    elif pilih == "4":
                         hapus_jadwal_dokter()
+                    elif pilih == "5":
+                        break    
                     else:
-                        print("❌ Menu tidak valid.")
-                        break
+                        print("Menu tidak valid.")
 
             elif pilih == "4":
-                print("👋 Keluar dari sistem admin...")
+                print("\nKeluar dari sistem admin...")
                 break
             else:
-                print("❌ Menu tidak valid.")
+                print("\nMenu tidak valid.")
     elif role == "pasien":
         while True:
             menu_pasien()
@@ -373,9 +446,9 @@ while True:
             if pilih == "1": lihat_jadwal_admin()
             elif pilih == "2": tambah_reservasi(user)
             elif pilih == "3": ubah_data_diri(user)
-            elif pilih == "4": hapus_reservasi()
+            elif pilih == "4": hapus_reservasi_pasien(user)
             elif pilih == "5":
-                print("👋 Keluar dari sistem pasien...")
+                print("Keluar dari sistem pasien...")
                 break
             else:
-                print("❌ Menu tidak valid.")
+                print("Menu tidak valid.")

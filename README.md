@@ -12,3 +12,13 @@ This system is especially useful for:
 - Training or prototyping before implementing a full-stack hospital information system
 - Educational purposes to understand how health records and scheduling work together
 By streamlining core hospital functions with this CLI system, healthcare facilities can reduce clerical workload, minimize errors, and deliver a more organized service to patients.
+
+## Features
+The Hospital Information System includes the following core features:
+### Patient Management
+- Add new patient records with ID, name, gender, age, address, and phone number
+- Update existing patient details with input validation
+- Delete patient records (with confirmation prompt)
+- Automatically removes related reservations when a patient is deleted
+- Display patient data in a clear tabular format
+

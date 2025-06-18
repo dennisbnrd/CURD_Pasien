@@ -57,3 +57,24 @@ cd Sistem-Reservasi-CRUD-Pasien-Rumah-Sakit
 | `spesialis` | str  | Doctor's specialization                   |
 | `hari`      | str  | Practice days (e.g. "Monday - Wednesday") |
 
+### 2. data_pasien — Patient Information
+| Field           | Type | Description                       |
+| --------------- | ---- | --------------------------------- |
+| `id`            | str  | Unique patient ID                 |
+| `nama`          | str  | Full name of the patient          |
+| `jenis_kelamin` | str  | Gender ('L' = Male, 'P' = Female) |
+| `umur`          | int  | Age of the patient                |
+| `alamat`        | str  | Address                           |
+| `nomor_hp`      | str  | Phone number (max 12 digits)      |
+
+### 3. data_reservasi — Reservation Information
+| Field       | Type | Description                             |
+| ----------- | ---- | --------------------------------------- |
+| `id_pasien` | str  | Refers to patient's `id`                |
+| `keluhan`   | str  | Medical complaint                       |
+| `tanggal`   | str  | Reservation date (format: `DD/MM/YYYY`) |
+| `dokter`    | str  | Assigned doctor name                    |
+| `rawat`     | str  | Treatment type (`Inap` or `Jalan`)      |
+| `ruangan`   | str  | Room name or `"-"` for outpatient       |
+
+

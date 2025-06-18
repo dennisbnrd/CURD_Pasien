@@ -62,7 +62,7 @@ def sub_menu_reservasi():
     print("5. Keluar")
 
 def sub_menu_dokter():
-    print("\n==== Menu Data Dokter ====")
+    print("\n==== Menu Data Dokter Admin ====")
     print("1. Lihat Jadwal Dokter")
     print("2. Tambah Jadawal Dokter")
     print("3. Ubah Jadwal Dokter")

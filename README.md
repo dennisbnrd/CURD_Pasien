@@ -42,3 +42,7 @@ The Hospital Information System includes the following core features:
 Follow these steps to set up and run the Hospital Information System on your local machine:
 ### 1. Requirements
 Python 3.6 or above must be installed
+### 2. Clone or Download the Project
+'''bash
+git clone https://github.com/dennisbnrd/hospital-information-system.git
+cd hospital-information-system

@@ -1,2 +1,3 @@
 # Sistem Reservasi CRUD Pasien Rumah Sakit
-Sistem ini merupakan aplikasi berbasis Python sederhana yang digunakan untuk mengelola data pasien, reservasi, dan jadwal dokter. Aplikasi ini berjalan di terminal/command-line interface (CLI) dan menggunakan struktur data berbasis list dan dictionary.
+This system is a simple Python-based application used to manage patient data, reservations, and doctor schedules. It runs on a terminal/command-line interface (CLI) and uses list and dictionary-based data structures.
+

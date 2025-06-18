@@ -32,11 +32,13 @@ The Hospital Information System includes the following core features:
 - Delete reservations (individually or all at once with confirmation)
 - Show reservation data in tabulated format
 
-### Installation
-
-
-###Doctor Schedule Management
+###  Doctor Schedule Management
 - Add new doctors with their specialization and working days
 - Prevent duplicate doctor entries
 - Delete doctor schedules with confirmation
 - View all current doctor schedules in a tabular list
+
+## Installation
+Follow these steps to set up and run the Hospital Information System on your local machine:
+### 1. Requirements
+Python 3.6 or above must be installed

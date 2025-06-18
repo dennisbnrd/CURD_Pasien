@@ -47,3 +47,13 @@ Python 3.6 or above must be installed
 git clone https://github.com/dennisbnrd/Sistem-Reservasi-CRUD-Pasien-Rumah-Sakit.git
 cd Sistem-Reservasi-CRUD-Pasien-Rumah-Sakit
 ```
+
+## Data Model
+
+### 1. data_dokter — Doctor Schedule
+| Field       | Type | Description                               |
+| ----------- | ---- | ----------------------------------------- |
+| `nama`      | str  | Full name of the doctor                   |
+| `spesialis` | str  | Doctor's specialization                   |
+| `hari`      | str  | Practice days (e.g. "Monday - Wednesday") |
+

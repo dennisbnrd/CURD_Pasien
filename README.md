@@ -44,5 +44,6 @@ Follow these steps to set up and run the Hospital Information System on your loc
 Python 3.6 or above must be installed
 ### 2. Clone or Download the Project
 '''bash
-git clone https://github.com/dennisbnrd/hospital-information-system.git
-cd hospital-information-system
+git clone https://github.com/dennisbnrd/SistemReservasiCRUDPasienRumahSakit.git
+cd SistemReservasiCRUDPasienRumahSakit
+'''

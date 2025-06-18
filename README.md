@@ -22,3 +22,13 @@ The Hospital Information System includes the following core features:
 - Automatically removes related reservations when a patient is deleted
 - Display patient data in a clear tabular format
 
+### Reservation Management
+- Patients can create new reservations by selecting:
+  - Symptoms/complaints
+  - Date of appointment
+  - Doctor and treatment type (Inpatient/Outpatient)
+- Automatically assigns room for inpatients and placeholder for outpatients
+- Modify reservation details (symptoms, date, doctor, room)
+- Delete reservations (individually or all at once with confirmation)
+- Show reservation data in tabulated format
+
